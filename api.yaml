@@ -1,0 +1,495 @@
+openapi: 3.0.0
+servers:
+  - description: AWS infrastructure is used for high availability and performance.
+    url: https://virtserver.swaggerhub.com/BRADLEYRC_1/GamingRewards/1.0.0
+info:
+  description: API for maintaining gaming rewards in player wallet objects. Processing is decoupled from the API layer into highly redundant side processes.
+  version: "1.0.0"
+  title: Gaming Rewards API
+  contact:
+    email: bradleyrc@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Wallets
+    description: Gaming Wallet resource related endpoints
+  - name: RewardPackages
+    description: Reward package with X-Points amount
+  - name: Rewards
+    description: Reward for wallet with X-Points amount or reward package id
+  - name: Transactions
+    description: Transactions history list
+  - name: admin
+    description: Secured Admin-only calls
+paths:
+  /wallets:
+    post:
+      tags:
+        - Wallets
+      summary: adds a wallet
+      operationId: addWallet
+      description: Adds a wallet to the system
+      responses:
+        '201':
+          description: wallet created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing wallet already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+        description: Wallet object to add
+  /wallets/{walletId}:
+    get:
+      tags:
+        - Wallets
+      summary: Find wallet by ID
+      operationId: getByWalletId
+      description: |
+        Retrieves a single wallet
+      parameters:
+        - name: walletId
+          in: path
+          description: ID of wallet
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Wallet not found
+    put:
+      tags:
+        - Wallets
+      summary: Update wallet by ID
+      operationId: updateByWalletId
+      description: |
+        Updates a single wallet with supplied data
+      parameters:
+        - name: walletId
+          in: path
+          description: ID of wallet
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Wallet not found
+    delete:
+      tags:
+        - Wallets
+      summary: Deletes a wallet
+      description: delete a wallet
+      operationId: deleteWallet
+      parameters:
+        - name: walletId
+          in: path
+          description: ID of wallet
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '204':
+          description: Successful delete
+        '400':
+          description: Invalid ID supplied
+  /reward-packages:
+    post:
+      tags:
+        - RewardPackages
+      summary: adds a RewardPackage
+      operationId: addRewardPackage
+      description: Adds a RewardPackage to the system
+      responses:
+        '201':
+          description: RewardPackage created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing RewardPackage already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardPackage'
+        description: RewardPackage object to add
+  /reward-packages/{rewardPackageId}:
+    get:
+      tags:
+        - RewardPackages
+      summary: Find RewardPackage by ID
+      operationId: getByRewardPackageId
+      description: |
+        Retrieves a reward package
+      parameters:
+        - name: rewardPackageId
+          in: path
+          description: ID of reward package
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: RewardPackage not found
+    put:
+      tags:
+        - RewardPackages
+      summary: Update RewardPackage by ID
+      operationId: updateByRewardPackageId
+      description: |
+        Updates a single RewardPackage with supplied data
+      parameters:
+        - name: rewardPackageId
+          in: path
+          description: ID of RewardPackage
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/RewardPackage'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: RewardPackage not found
+    delete:
+      tags:
+        - RewardPackages
+      summary: Deletes a RewardPackage
+      description: delete a RewardPackage
+      operationId: deleteRewardPackage
+      parameters:
+        - name: rewardPackageId
+          in: path
+          description: ID of RewardPackage
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '204':
+          description: Successful delete
+        '400':
+          description: Invalid ID supplied
+  /reward:
+    post:
+      tags:
+        - Rewards
+      summary: adds a Reward
+      operationId: addReward
+      description: Adds a Reward to be credited to the wallet
+      responses:
+        '201':
+          description: Reward created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reward'
+        description: Reward object to add
+  /wallet-transactions/{walletId}:
+    get:
+      tags:
+        - Transactions
+      summary: Get transactions by wallet ID
+      operationId: getTransactionsByWalletId
+      description: |
+        List all transactions by wallet ID
+      parameters:
+        - name: walletId
+          in: path
+          description: ID of wallet
+          required: true
+          schema:
+            type: string
+            format: string
+        - name: sortOrder
+          in: query
+          description: Order of transactions in history
+          required: false
+          schema:
+            type: string
+            default: descending
+            enum:
+              - descending
+              - ascending
+        - name: page
+          in: query
+          description: Start page number of the result set
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: perPage
+          in: query
+          description: Number of results per page in the result set
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 100
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Wallet not found
+  /transactions:
+    post:
+      tags:
+        - Transactions
+        - admin
+      summary: Adds a Transaction
+      operationId: addTransaction
+      description: Admin utility to debit or credit a wallet
+      responses:
+        '201':
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        description: Transaction object to add, containing wallet id, amount, and whether to debit or credit (type).
+components:
+  schemas:
+    Wallet:
+      type: object
+      required:
+        - id
+        - ext_id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        ext_id:
+          type: string
+          format: uuid
+          example: e290f1ee-6c54-4b01-90e6-d701748f0852
+        email:
+          type: string
+          format: email
+          example: test@test.com
+        handle:
+          type: string
+          example: fireblaster85
+        avatar:
+          type: string
+          example: 'https://www.cloud-cdn.some-cdn.com/fireblaster85'
+        createdDate:
+          type: string
+          format: date-time
+          example: '2023-08-29T09:12:33.001Z'
+        updatedDate:
+          type: string
+          format: date-time
+          example: '2023-08-30T09:12:33.001Z'
+    RewardPackage:
+      type: object
+      required:
+        - id
+        - key
+        - amount
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        key:
+          type: string
+          format: dot-delimited
+          example: purchase.game
+        amount:
+          type: number
+          example: 1.25
+        description:
+          type: string
+          example: 'Reward package for purchase of a new game'
+        createdDate:
+          type: string
+          format: date-time
+          example: '2023-08-29T09:12:33.001Z'
+        updatedDate:
+          type: string
+          format: date-time
+          example: '2023-08-30T09:12:33.001Z'
+    Reward:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: a290f1ee-6c54-4b01-90e6-d701748f0850
+        walletId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          description: 'Specify the id of the wallet to credit the reward to. One of walletId and walletExtId is required.'
+        walletExtId:
+          type: string
+          format: uuid
+          example: e290f1ee-6c54-4b01-90e6-d701748f0852  
+          description: 'Specify the ext ID of the wallet to credit the reward to. One of walletId and walletExtId is required.'
+        amount:
+          type: number
+          example: 5.25
+          description: 'Specify amount to credit to the wallet. One of amount and rewardPackageId is required'
+        rewardPackageId:
+          type: string
+          format: uuid
+          example: f290f1ee-6c54-4b01-90e6-d701748f0853
+          description: 'Specify reward package for amount to credit to the wallet. One of amount and rewardPackageId is required'
+        description:
+          type: string
+          example: 'Award for 15 hours played milestone'
+        syncronous:
+          type: boolean
+          description: 'For fault tolerance. Whether to process the result syncronously. The system will immediately pass the reward information to a redundant processor, and return the result for quick response time and performance. If syncronous is set to true, the api response will wait until the balance has been fully credited to the wallet before returning. Otherwise the reward will be processed asyncronously by a separate process. Jobs should be complete within seconds, but a recurring process will check for any failed processes to ensure that they are completed (See the "processed" flag) Defaults to false. (Not recommended unless end user/game player initiated the request)'
+        processed:
+          type: boolean
+          description: 'Reward processing is always decoupled which improves performance and response time. The underlying process of crediting or debiting the wallet is handled in a separate process from the api response layer. Whether the reward credit has been processed and applied to the wallet. Will be false initially for asyncronous reward. The reward will be passed to a separate redundant processor which will set the processed flag to true upon updating the wallet balance.'
+        createdDate:
+          type: string
+          format: date-time
+          example: '2023-08-29T09:12:33.001Z'
+        updatedDate:
+          type: string
+          format: date-time
+          example: '2023-08-30T09:12:33.001Z'
+    Transaction:
+      type: object
+      properties:
+        walletId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          description: 'Wallet id linked to the transaction'
+        amount:
+          type: number
+          example: 5.25
+        type:
+          type: string
+          format: 'credit|debit'
+          example: 'credit'
+        description:
+          type: string
+          example: 'Award for 15 hours played milestone'
+        rewardId:
+          type: string
+          format: uuid
+          example: a290f1ee-6c54-4b01-90e6-d701748f0850
+        systemUserId:
+          type: string
+          format: uuid
+          example: z290f1ee-6c54-4b01-90e6-d701748f0859
+        createdDate:
+          type: string
+          format: date-time
+          example: '2023-08-29T09:12:33.001Z'
