@@ -20,6 +20,8 @@ tags:
     description: Reward for wallet with X-Points amount or reward package id
   - name: Transactions
     description: Transactions history list
+  - name: EmailNotifications
+    description: Notification template and amount threshold setting
   - name: admin
     description: Secured Admin-only calls
 paths:
@@ -357,6 +359,122 @@ paths:
             schema:
               $ref: '#/components/schemas/Transaction'
         description: Transaction object to add, containing wallet id, amount, and whether to debit or credit (type).
+  /email-notifications:
+    get:
+      tags:
+        - EmailNotifications
+        - admin
+      summary: List 
+      operationId: listEmailNotifications
+      description: Admin utility to get the email notifications
+      responses:
+        responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+    post:
+      tags:
+        - EmailNotifications
+        - admin
+      summary: Adds a EmailNotification
+      operationId: addEmailNotification
+      description: Admin utility to set up email notification setting
+      responses:
+        '201':
+          description: EmailNotification created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailNotification'
+        description: EmailNotification object to add, containing AWS SES template ID and threshold amount
+  /email-notifications/{EmailNotificationId}:
+    get:
+      tags:
+        - EmailNotifications
+        - admin
+      summary: Find RewardPackage by ID
+      operationId: getByRewardPackageId
+      description: |
+        Retrieves a reward package
+      parameters:
+        - name: EmailNotificationId
+          in: path
+          description: ID of email notification
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: EmailNotification not found
+    put:
+      tags:
+        - EmailNotifications
+      summary: Update EmailNotification by ID
+      operationId: updateByEmailNotificationId
+      description: |
+        Updates a single EmailNotification with supplied data
+      parameters:
+        - name: EmailNotificationId
+          in: path
+          description: ID of EmailNotification
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/EmailNotification'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: EmailNotification not found
 components:
   schemas:
     Wallet:
@@ -493,3 +611,26 @@ components:
           type: string
           format: date-time
           example: '2023-08-29T09:12:33.001Z'
+    EmailNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        templateId:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          description: 'AWS SES template id to use'
+        amount_threshold:
+          type: number
+          example: 25.00
+        createdDate:
+          type: string
+          format: date-time
+          example: '2023-08-29T09:12:33.001Z'
+        updatedDate:
+          type: string
+          format: date-time
+          example: '2023-08-30T09:12:33.001Z'
