@@ -368,7 +368,6 @@ paths:
       operationId: listEmailNotifications
       description: Admin utility to get the email notifications
       responses:
-        responses:
         '200':
           description: successful operation
           content:
@@ -414,10 +413,10 @@ paths:
       tags:
         - EmailNotifications
         - admin
-      summary: Find RewardPackage by ID
-      operationId: getByRewardPackageId
+      summary: Find EmailNotification by ID
+      operationId: getByEmailNotificationId
       description: |
-        Retrieves a reward package
+        Retrieves a EmailNotification
       parameters:
         - name: EmailNotificationId
           in: path
